@@ -101,18 +101,22 @@ bool uniqueData(list* &listt, ZNAK timeStruct){
 //MARK: Вывод всего списка
 void printList(list *list)
 {
-    cout << "/---------------------------------------------------------\\" << endl;
-    cout << "|                 Информация о сотрудниках                |" << endl;
-    cout << "|---------------------------------------------------------|" << endl;
-    cout << "|Имя        Фамилия        Знак зодиака   Дата рождения   |" << endl;
-    cout << "|---------------------------------------------------------|" << endl;
+    if (ListSize(list)){
+        cout << "/---------------------------------------------------------\\" << endl;
+        cout << "|                 Информация о сотрудниках                |" << endl;
+        cout << "|---------------------------------------------------------|" << endl;
+        cout << "|Имя        Фамилия        Знак зодиака   Дата рождения   |" << endl;
+        cout << "|---------------------------------------------------------|" << endl;
 
-    while (list){
-        string date = to_string(list->value.date[0]) + "." + to_string(list->value.date[1]) + "." + to_string(list->value.date[2]);
-        cout << "|" << setw(10) << left <<  list->value.name << " " << setw(14) << left << list->value.soname << " " << setw(22) << left << list->value.badassSign << setw(20) << left << date << "|" << endl;
-        list = list->next;    
+        while (list){
+            string date = to_string(list->value.date[0]) + "." + to_string(list->value.date[1]) + "." + to_string(list->value.date[2]);
+            cout << "|" << setw(10) << left <<  list->value.name << " " << setw(14) << left << list->value.soname << " " << setw(22) << left << list->value.badassSign << setw(20) << left << date << "|" << endl;
+            list = list->next;
+        }
+        cout << "|---------------------------------------------------------|" << endl;
+    }else{
+        cout << "Данных пока что нету " << endl;
     }
-    cout << "|---------------------------------------------------------|" << endl;
 }
 
 //MARK: Поиск последнего элемента списка
@@ -253,11 +257,9 @@ void menu(){
     cout << "| 5 - удалить пользователя                      |" << endl;
     cout << "| 6 - сохранение данных                         |" << endl;
     cout << "| 7 - вывод на экран списка пользователей       |" << endl;
-    cout << "| любая другая цифра, буква выход из программы  |" << endl;
+    cout << "| 8 - выход из программы                        |" << endl;
     cout << "\\-----------------------------------------------/" << endl << endl;
-    
 }
-
 
 
 //MARK: Обработка строки
@@ -310,9 +312,9 @@ void workWithFileLine(list* &listt,string line){
 
 
 //MARK: Cчитывание данных из файла
-void readData(list* &listt){
+void readData(list* &listt,string path){
     
-    ifstream file("/Users/kirillkornusenkov/Desktop/Main/Main/file.txt");
+    ifstream file(path);
     
     if (!file){
         cout << "файл не найден" << endl;
@@ -511,8 +513,8 @@ void dataChange(list* &listt){
 }
 
 //MARK: Сохранение данных
-void saveData(list* &listt){
-    ofstream file("/Users/kirillkornusenkov/Desktop/Main/Main/file.txt");
+void saveData(list* &listt,string path){
+    ofstream file(path);
     
     if (file.is_open()){
         list* head = listt;
@@ -528,7 +530,7 @@ void saveData(list* &listt){
 }
 
 //MARK: Сортировка людей по фамилии
-void sortPeople(list* &listt){
+void sortPeople(list* &listt,string path){
        list* ptr = listt, *tmp = NULL, *prev = NULL;
        bool flag = false;
        if(listt){
@@ -569,7 +571,7 @@ void sortPeople(list* &listt){
            int a = atoi(aa.c_str());
            switch (a) {
                case 1:
-                   saveData(listt);
+                   saveData(listt,path);
                    break;
                 case 2:
                    printList(listt);
@@ -654,17 +656,19 @@ int main(){
 
     list *listt = NULL;
     
+    const string path = "/Users/kirillkornusenkov/Desktop/Main/Main/file.txt";
+    
     setlocale(LC_ALL, "ru");
 
-    readData(listt);
+    readData(listt,path);
    
   
     bool check = true;
     while (check) {
         menu();
         
-        int digite = coutCinInt("Выберите пункт меню: ");
-       
+        string digites = coutCin("Выберите пункт меню: ");
+        int digite = atoi(digites.c_str());
         switch (digite) {
             case 1:{
                 bool check = true;
@@ -681,20 +685,24 @@ int main(){
                 dataChange(listt);
                 break;
             case 4:
-                sortPeople(listt);
+                sortPeople(listt,path);
                 break;
             case 5:
                 deleteEl(listt);
                 break;
              case 6:
-                saveData(listt);
+                saveData(listt,path);
                 break;
             case 7:
                 printList(listt);
                 break;
+            case 8:
+                saveData(listt,path);
+                check = false;
+                break;
             default:
-               saveData(listt);
-               check = false;
+                cout << "Такой команды нету" << endl;
+                break;
         }
     }
 }
