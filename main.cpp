@@ -6,8 +6,7 @@
 using namespace std;
 
 //MARK: Струкура
-struct ZNAK
-{
+struct ZNAK{
     string name;
     string soname;
     int date[3];
@@ -44,8 +43,7 @@ string coutCin(string text){
 }
 
 //MARK: Создание списка с первым значением
-list *createList(ZNAK timeStruct)
-{
+list *createList(ZNAK timeStruct){
     list *head = new list;
     head->next = NULL;
     head->value.name = timeStruct.name;
@@ -207,7 +205,7 @@ ZNAK readTimeStruct(bool &check){
     int day, month,year;
     
     string name,soname;
-    getline(cin,name);
+    cin.ignore();
     cout << "Введите имя ";
     getline(cin,name);
     cout << "Введите фамилию ";
@@ -384,8 +382,8 @@ void changeName(list* & listt,string name,string soname,list* & list2){
     ZNAK time;
     
     string newName;
+    cin.ignore();
     cout << "Введите имя " << endl;
-    getline(cin, newName);
     getline(cin, newName);
     
     //string newName = coutCin("Введите новое имя: ");
@@ -416,8 +414,8 @@ void changeSoname(list* & listt,string name,string soname,list* &list2){
     ZNAK time;
     
     string newName;
+    cin.ignore();
     cout << "name " << endl;
-    getline(cin, newName);
     getline(cin, newName);
     
     //string newName = coutCin("Введите новую фамилию: ");
