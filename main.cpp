@@ -683,7 +683,7 @@ int main(){
 
     list *listt = NULL;
     
-    const string path = "/Users/kirillkornusenkov/Desktop/Main_Kypcoday/Main/file.txt";
+    const string path = "/Users/kirillkornusenkov/Desktop/Main_Kypcoday/Main/file7.txt";
     
     setlocale(LC_ALL,"ru");
 
@@ -722,10 +722,21 @@ int main(){
             case 7:
                 printList(listt);
                 break;
-            case 8:
-                saveData(listt,path);
+            case 8:{
+                bool saveOrNotSave = true;
+                do{
+                    string saves = coutCin("Сохранить данные ? 1-да 2-нет ");
+                    int save = atoi(saves.c_str());
+                    if (save==1){
+                        saveData(listt,path);
+                        saveOrNotSave = false;
+                    }else if (save==2){
+                        saveOrNotSave = false;
+                    }
+                }while (saveOrNotSave);
                 check = false;
                 break;
+            }
             default:
                 cout << "Такой команды нету" << endl;
                 break;
