@@ -48,8 +48,6 @@ list *createList(ZNAK timeStruct){
     return head;
 }
 
-
-
  //MARK: Вставка элемента в начала списка
 void prepend(list* &head, ZNAK timeStruct){
     if (!head){
@@ -82,8 +80,7 @@ int ListSize(list *list){
 //MARK: Проверка новых данных на уникальность
 bool uniqueData(list* &listt, ZNAK timeStruct){
     list* temp = listt;
-    while(listt)
-    {
+    while(listt){
         if (listt->value.name == timeStruct.name && listt->value.soname == timeStruct.soname && listt->value.date[0] == timeStruct.date[0] && listt->value.date[1] == timeStruct.date[1] && listt->value.date[2] == timeStruct.date[2]){
             listt = temp;
             return false;
@@ -96,8 +93,7 @@ bool uniqueData(list* &listt, ZNAK timeStruct){
 
 
 //MARK: Вывод всего списка
-void printList(list *list)
-{
+void printList(list *list){
     if (ListSize(list)){
         cout << "/---------------------------------------------------------\\" << endl;
         cout << "|                 Информация о сотрудниках                |" << endl;
@@ -117,8 +113,7 @@ void printList(list *list)
 }
 
 //MARK: Поиск последнего элемента списка
-list *getLast(list *list)
-{
+list *getLast(list *list){
     if (!list)
         return list;
 
@@ -148,7 +143,7 @@ bool checkDataFromFile(int day, int month, int year){
         case 12:
             return IsRange(day, 1, 31);
         case 2:
-            if ((year%4==0 && year%100!=0) || year%400 ==0)
+            if (year%4==0||(year%100==0&&year%400==0))
                 return IsRange(day, 1, 29);
             else
                 return IsRange(day, 1, 28);
@@ -239,6 +234,7 @@ void append(list* &listt, ZNAK timeStruct){
             prepend(listt,timeStruct);
             return;
         }
+        
         list *tmp = new list;
         tmp->next = NULL;
         tmp->value.name = timeStruct.name;
@@ -248,6 +244,7 @@ void append(list* &listt, ZNAK timeStruct){
         tmp->value.date[1] = timeStruct.date[1];
         tmp->value.date[2] = timeStruct.date[2];
         lastt->next = tmp;
+        
     }else{
         cout << "Такой пользователь уже есть" << endl;
     }
@@ -610,7 +607,6 @@ void sortPeople(list* &listt,string path){
 }
 
 //MARK:Удаление элемента
-//удаление 1 элемента
 void removeElement(list* &listt,list* &list2,int count){
     //удаление первого элмента
     if (listt->value.soname == list2->value.soname){
@@ -688,7 +684,6 @@ int main(){
 
     readData(listt,path);
    
-  
     bool check = true;
     while (check) {
         menu();
