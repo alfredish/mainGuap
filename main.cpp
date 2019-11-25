@@ -18,13 +18,6 @@ struct list{
     list *next;
 };
 
-//MARK: CLEAR
-void clear(list* listt){
-    if (listt != NULL) {
-        clear(listt->next);
-        delete [] listt;
-    }
-}
 
 //MARK: Вывод и считывание  int
 int coutCinInt(string text){
@@ -456,6 +449,9 @@ void changeDate(list* &listt,string name,string soname,list* &list2){
           if (listt->value.name == list2->value.name && listt->value.soname == list2->value.soname && listt->value.date[0] == list2->value.date[0] && listt->value.date[1]==list2->value.date[1] && listt->value.date[2] == list2->value.date[2]){
               time.name = listt->value.name;
               time.soname = listt->value.soname;
+              time.date[0] = day;
+              time.date[1] = month;
+              time.date[2] = year;
               time.badassSign = badass(time.date[0], time.date[1]);
               if (uniqueData(head, time)){
                   listt->value.date[0] = time.date[0];
@@ -540,7 +536,7 @@ void dataChange(list* &listt){
         }
     listt = head;
     }
-    //clear(list2);
+
 }
 
 //MARK: Сохранение данных
@@ -641,7 +637,7 @@ void removeElement(list* &listt,list* &list2,int count){
 
         listt = temp;
         list2 = temp2;
-        //clear(list2);
+    
     }
 }
 
@@ -686,7 +682,7 @@ int main(){
 
     list *listt = NULL;
     
-    const string path = "file.txt";
+    const string path = "/Users/kirillkornusenkov/Desktop/Main_Kypcoday/Main/file.txt";
     
     setlocale(LC_ALL,"ru");
 
