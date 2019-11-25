@@ -19,7 +19,7 @@ struct list{
 };
 
 
-//MARK: Вывод и считывание  int
+//MARK: Вывод и считывание  int
 int coutCinInt(string text){
     int var;
     cout << text;
@@ -468,13 +468,14 @@ void changeDate(list* &listt,string name,string soname,list* &list2){
 
 //MARK: Выбор изменения
 void chose(list* &listt,list* &list2,string soname){
-    cout << "Что вы хотите изменить ? Введите последовательность цифр." << endl;
+    cout << "Что вы хотите изменить ?" << endl;
     cout << "1 - Имя" << endl;
     cout << "2 - Фамилия" << endl;
     cout << "3 - дата рождения" << endl;
         
-    int digite = coutCinInt("");
-        
+    string digites = coutCin("");
+    int digite = atoi(digites.c_str());
+    
     switch (digite) {
         case 1:
             changeName(listt, list2->value.name, soname,list2);
@@ -553,7 +554,7 @@ void saveData(list* &listt,string path){
     }
 }
 
-//MARK: Сортировка людей по фамилии
+//MARK: Сортировка людей по знаку
 void sortPeople(list* &listt,string path){
        list* ptr = listt, *tmp = NULL, *prev = NULL;
        bool flag = false;
@@ -613,7 +614,7 @@ void removeElement(list* &listt,list* &list2,int count){
         list* tmp = listt;
         listt = listt->next;
         delete tmp;
-        cout << "Пользователь удален 1" << endl;
+        cout << "Пользователь удален" << endl;
     }else{
         list* temp2 = list2;
         list* temp = listt;
@@ -667,8 +668,12 @@ void deleteEl(list* &listt){
             list2 = list2->next;
         }
         list2 = temp2;
-        pos = coutCinInt("Введите номер элемента, который хотите удалить ");
-        removeElement(listt,list2,count);
+        string nums = coutCin("Введите номер элемента, который хотите удалить ");
+        int num = atoi(nums.c_str());
+        if (num>0 && num < count)
+            removeElement(listt,list2,count);
+        else
+            cout << "такого пользователя нету" << endl;
     }
 }
 
