@@ -21,6 +21,15 @@ struct list{
     list *next;
 };
 
+//MARK: CLEAR
+void clear(list* listt){
+    if (listt != NULL) {
+        //list* tmp = listt->next;
+        clear(listt->next);
+        delete [] listt;
+    }
+}
+
 //MARK: Вывод и считывание  int
 int coutCinInt(string text){
     int var;
@@ -199,23 +208,35 @@ string badass(int day,int month){
 //MARK: Считывание новых данных
 ZNAK readTimeStruct(bool &check){
     ZNAK timeStruct;
+    int day, month,year;
+    
+    //string name,soname;
+    //cout << "NAME " << endl;
+    //getline(cin,name);
+    //cout << "soname "<< endl;
+    //getline(cin, soname);
+    //timeStruct.name = name;
+    //timeStruct.soname = soname;
+    
     timeStruct.name = coutCin("Введите Имя: ");
     timeStruct.soname = coutCin("Введите Фамилию: ");
-    string days = coutCin("Введите день рождения ");
-    int day = atoi(days.c_str());
-    string months = coutCin("Введите месяц рождения ");
-    int month = atoi(months.c_str());
-    string years = coutCin("Введите год рождения ");
-    int year = atoi(years.c_str());
-    check = checkDataFromFile(day, month, year);
-    if (!check){
-        cout << "Вы ввели некоректную дату рождения" << endl;
-    }else{
-        timeStruct.date[0] = day;
-        timeStruct.date[1] = month;
-        timeStruct.date[2] = year;
-        timeStruct.badassSign = badass(timeStruct.date[0],timeStruct.date[1]);
-    }
+    do{
+        if (!check){
+            cout << "Вы ввели некоректную дату рождения" << endl;
+        }
+        string days = coutCin("Введите день рождения ");
+        day = atoi(days.c_str());
+        string months = coutCin("Введите месяц рождения ");
+        month = atoi(months.c_str());
+        string years = coutCin("Введите год рождения ");
+        year = atoi(years.c_str());
+        check = false;
+    }while (!checkDataFromFile(day, month, year));
+    check = true;
+    timeStruct.date[0] = day;
+    timeStruct.date[1] = month;
+    timeStruct.date[2] = year;
+    timeStruct.badassSign = badass(timeStruct.date[0],timeStruct.date[1]);
 
     return timeStruct;
 }
@@ -269,7 +290,7 @@ void workWithFileLine(list* &listt,string line){
     string timeString;
     int count = 0;
     for (int i=0;i<line.length();i++){
-        if (line[i] != ' '){
+        if (line[i] != '#'){
             timeString += line[i];
         }
         else{
@@ -364,6 +385,11 @@ void findPeople(list* listt){
 void changeName(list* & listt,string name,string soname,list* & list2){
     list* head = listt;
     ZNAK time;
+    
+    //string newname;
+    //cout << "name " << endl;
+    //getline(cin, newname);
+    
     string newName = coutCin("Введите новое имя: ");
     while (listt) {
         if (listt->value.name == list2->value.name && listt->value.soname == list2->value.soname && listt->value.date[0] == list2->value.date[0] && listt->value.date[1]==list2->value.date[1] && listt->value.date[2] == list2->value.date[2]){
@@ -383,12 +409,18 @@ void changeName(list* & listt,string name,string soname,list* & list2){
         listt = listt->next;
     }
     listt = head;
+
 }
 
 //MARK: Изменение фамилии
 void changeSoname(list* & listt,string name,string soname,list* &list2){
     list* head = listt;
     ZNAK time;
+    
+    //string newname;
+    //cout << "name " << endl;
+    //getline(cin, newname);
+    
     string newName = coutCin("Введите новую фамилию: ");
     while (listt) {
         if (listt->value.name == list2->value.name && listt->value.soname == list2->value.soname && listt->value.date[0] == list2->value.date[0] && listt->value.date[1]==list2->value.date[1] && listt->value.date[2] == list2->value.date[2]){
@@ -471,6 +503,7 @@ void chose(list* &listt,list* &list2,string soname){
 
 //MARK: Изменения данных
 void dataChange(list* &listt){
+    
     string soname = coutCin("Введите фамилию пользователя: ");
     
     list* head = listt;
@@ -510,6 +543,7 @@ void dataChange(list* &listt){
         }
     listt = head;
     }
+    //clear(list2);
 }
 
 //MARK: Сохранение данных
@@ -519,7 +553,7 @@ void saveData(list* &listt,string path){
     if (file.is_open()){
         list* head = listt;
         while (listt){
-                file << listt->value.name << " " << listt->value.soname << " " << listt->value.date[0] << " "  << listt->value.date[1] << " " << listt->value.date[2] << endl;
+                file << listt->value.name << "#" << listt->value.soname << "#" << listt->value.date[0] << "#"  << listt->value.date[1] << "#" << listt->value.date[2] << endl;
             listt = listt->next;
             }
         listt = head;
@@ -558,9 +592,7 @@ void sortPeople(list* &listt,string path){
                    prev = ptr;
                    ptr = ptr->next;
                }
-           }
-           
-           while(flag);
+           }while(flag);
            cout<<"Список отсортирован."<< endl << endl;
            
            cout << "1 - Сохранить отсортированный список " << endl;
@@ -612,6 +644,7 @@ void removeElement(list* &listt,list* &list2,int count){
 
         listt = temp;
         list2 = temp2;
+        //clear(list2);
     }
 }
 
@@ -658,7 +691,7 @@ int main(){
     
     const string path = "/Users/kirillkornusenkov/Desktop/Main/Main/file.txt";
     
-    setlocale(LC_ALL, "ru");
+    setlocale(LC_ALL,"ru");
 
     readData(listt,path);
    
