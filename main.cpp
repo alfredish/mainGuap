@@ -3,9 +3,7 @@
 #include <fstream>
 #include <iomanip>
 
-
 using namespace std;
-
 
 //MARK: Струкура
 struct ZNAK
@@ -24,7 +22,6 @@ struct list{
 //MARK: CLEAR
 void clear(list* listt){
     if (listt != NULL) {
-        //list* tmp = listt->next;
         clear(listt->next);
         delete [] listt;
     }
@@ -174,7 +171,6 @@ bool checkDataFromFile(int day, int month, int year){
     }
 }
 
-
 //MARK: Определения знака зодиака
 string badass(int day,int month){
     if ((month == 3 && day > 20) ||(month == 4 && day < 21)) {
@@ -210,16 +206,17 @@ ZNAK readTimeStruct(bool &check){
     ZNAK timeStruct;
     int day, month,year;
     
-    //string name,soname;
-    //cout << "NAME " << endl;
-    //getline(cin,name);
-    //cout << "soname "<< endl;
-    //getline(cin, soname);
-    //timeStruct.name = name;
-    //timeStruct.soname = soname;
+    string name,soname;
+    getline(cin,name);
+    cout << "Введите имя ";
+    getline(cin,name);
+    cout << "Введите фамилию ";
+    getline(cin, soname);
+    timeStruct.name = name;
+    timeStruct.soname = soname;
     
-    timeStruct.name = coutCin("Введите Имя: ");
-    timeStruct.soname = coutCin("Введите Фамилию: ");
+    //timeStruct.name = coutCin("Введите Имя: ");
+    //timeStruct.soname = coutCin("Введите Фамилию: ");
     do{
         if (!check){
             cout << "Вы ввели некоректную дату рождения" << endl;
@@ -386,11 +383,12 @@ void changeName(list* & listt,string name,string soname,list* & list2){
     list* head = listt;
     ZNAK time;
     
-    //string newname;
-    //cout << "name " << endl;
-    //getline(cin, newname);
+    string newName;
+    cout << "Введите имя " << endl;
+    getline(cin, newName);
+    getline(cin, newName);
     
-    string newName = coutCin("Введите новое имя: ");
+    //string newName = coutCin("Введите новое имя: ");
     while (listt) {
         if (listt->value.name == list2->value.name && listt->value.soname == list2->value.soname && listt->value.date[0] == list2->value.date[0] && listt->value.date[1]==list2->value.date[1] && listt->value.date[2] == list2->value.date[2]){
             time.name = listt->value.name;
@@ -417,11 +415,12 @@ void changeSoname(list* & listt,string name,string soname,list* &list2){
     list* head = listt;
     ZNAK time;
     
-    //string newname;
-    //cout << "name " << endl;
-    //getline(cin, newname);
+    string newName;
+    cout << "name " << endl;
+    getline(cin, newName);
+    getline(cin, newName);
     
-    string newName = coutCin("Введите новую фамилию: ");
+    //string newName = coutCin("Введите новую фамилию: ");
     while (listt) {
         if (listt->value.name == list2->value.name && listt->value.soname == list2->value.soname && listt->value.date[0] == list2->value.date[0] && listt->value.date[1]==list2->value.date[1] && listt->value.date[2] == list2->value.date[2]){
             time.name = newName;
@@ -689,7 +688,7 @@ int main(){
 
     list *listt = NULL;
     
-    const string path = "/Users/kirillkornusenkov/Desktop/Main/Main/file.txt";
+    const string path = "file.txt";
     
     setlocale(LC_ALL,"ru");
 
